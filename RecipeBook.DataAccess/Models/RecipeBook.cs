@@ -2,7 +2,7 @@
 
 namespace RecipeBook.DataAccess.Models
 {
-    public class RecipeBook : BaseEntity
+    public class RecipeBook
     {
         [ForeignKey("FK_Book")]
         public int BookID { get; set; }

@@ -29,9 +29,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => $"{item.Description.Substring(0, 128)}...")
-                </td>
+
+                @if (item.Description.Length < 128)
+                {
+
+                    <td>
+                        @item.Description
+                    </td>
+}
+                else
+                {
+                    <td>
+                        @($"{item.Description.Substring(0, 128)}...")
+                    </td>
+                }
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ID">Details</a> |

@@ -15,8 +15,6 @@ namespace RecipeBook.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<RecipeBook>()
                 .HasKey(recipeBook => new {recipeBook.BookID, recipeBook.RecipeID });
 
@@ -29,6 +27,8 @@ namespace RecipeBook.DataAccess
                 .HasOne(b => b.Recipe)
                     .WithMany(rb => rb.RecipeBooks)
                         .HasForeignKey(rb => rb.RecipeID);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

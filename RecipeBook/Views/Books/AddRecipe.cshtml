@@ -1,15 +1,12 @@
 ﻿@model IEnumerable<RecipeBook.DataAccess.Models.Recipe>
 
 @{
-    ViewData["Title"] = "Recipe Book";
+    ViewData["Title"] = "Add Recipe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Recipe book "@ViewBag.BookName"</h2>
+<h2>Add recipe</h2>
 
-<p>
-    <a asp-action="AddRecipe" asp-route-id="@ViewBag.BookID">Add New Recipe</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +17,6 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -30,29 +26,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                @if (item.Description.Length < 128)
-                {
-
-                    <td>
-                        @item.Description
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        @($"{item.Description.Substring(0, 128)}...")
-                    </td>
-                }
                 <td>
-                    <a asp-action="Details" asp-controller="Recipes" asp-route-id="@item.ID">Details</a>
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @using (Html.BeginForm("DeleteRecipe", "Books", FormMethod.Post))
+                    @using (Html.BeginForm("AddRecipe", "Books", FormMethod.Post))
                     {
                         <input type="hidden" name="BookID" value="@ViewBag.BookID" />
                         <input type="hidden" name="RecipeID" value="@item.ID" />
 
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     }
                 </td>
             </tr>

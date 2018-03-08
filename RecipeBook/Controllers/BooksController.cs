@@ -143,11 +143,54 @@ namespace RecipeBook.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("/Books/{id}/Recipes")]
         public async Task<IActionResult> Recipes(int ID)
         {
-            var book = await _repository.GetAsync(ID);
+            var book = await _repository.GetBookWithRecipesAsync(ID);
             var recipes = book.RecipeBooks.Select(r => r.Recipe);
+
+            ViewBag.BookID = ID;
+            ViewBag.BookName = book.Name;
+
             return View(recipes);
+        }
+
+        [HttpGet]
+        [Route("/Books/{id}/AddRecipe")]
+        public async Task<IActionResult> AddRecipe(int ID)
+        {
+            var recipesNotInBook = await _repository.GetRecipesNotInBook(ID);
+
+            ViewBag.BookID = ID;
+
+            return View(recipesNotInBook);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/Books/{BookID}/AddRecipe")]
+        public async Task<IActionResult> AddRecipe(int BookID, int RecipeID)
+        {
+            var book = await _repository.GetAsync(BookID);
+            book.RecipeBooks.Add(new RecipeBook() { BookID = BookID, RecipeID = RecipeID });
+
+            await _repository.UpdateAsync(book);
+
+            return RedirectToAction(nameof(Recipes), new { ID = BookID });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRecipe(int BookID, int RecipeID)
+        {
+            var book = await _repository.GetBookWithRecipesAsync(BookID);
+            var recipe = book.RecipeBooks.FirstOrDefault(r => r.BookID == BookID && r.RecipeID == RecipeID);
+
+            book.RecipeBooks.Remove(recipe);
+
+            await _repository.UpdateAsync(book);
+
+            return RedirectToAction(nameof(Recipes), new { ID = BookID });
         }
 
         private async Task<bool> BookExists(int id)

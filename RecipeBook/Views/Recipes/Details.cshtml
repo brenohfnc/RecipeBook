@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
-            @Html.TextAreaFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @readonly = "readonly" })
         </dd>
     </dl>
 </div>

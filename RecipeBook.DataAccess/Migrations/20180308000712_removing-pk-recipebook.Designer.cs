@@ -11,9 +11,10 @@ using System;
 namespace RecipeBook.DataAccess.Migrations
 {
     [DbContext(typeof(RecipeBookContext))]
-    partial class RecipeBookContextModelSnapshot : ModelSnapshot
+    [Migration("20180308000712_removing-pk-recipebook")]
+    partial class removingpkrecipebook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
